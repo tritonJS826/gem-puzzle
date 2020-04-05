@@ -125,3 +125,8 @@ function fieldListener() {
 }
 
 fieldListener();
+
+
+window.addEventListener('resize', () => {
+  gemPuzzle.renderField();
+});
