@@ -70,6 +70,8 @@ document.getElementById('buttons').addEventListener('click', ({ target: { id } }
     gemPuzzle.timeRenderer();
     gemPuzzle.field = gemPuzzle.getNewField();
     gemPuzzle.renderField();
+    gemPuzzle.moveCounter = 0;
+    gemPuzzle.moveCounterRenderer();
   }
   if (id === 'save') alert('save');
   if (id === 'results') alert('results');
@@ -106,9 +108,7 @@ function tryToShift(i, j) {
     gemPuzzle.renderField();
     gemPuzzle.counterPlusOne();
     gemPuzzle.moveCounterRenderer();
-    return;
   }
-  gemPuzzle.renderField();
 }
 
 function fieldListener() {

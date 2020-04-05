@@ -1,7 +1,7 @@
 function renderField(field) {
   const PLAYING_FIELD = document.getElementById('playingField');
   PLAYING_FIELD.innerHTML = '';
-  const WIDTH = document.documentElement.clientWidth - 30;
+  const WIDTH = document.documentElement.clientWidth - 40;
   PLAYING_FIELD.style.width = `${WIDTH}px`;
   PLAYING_FIELD.style.height = `${(WIDTH) / 2}px`;
   // [...document.querySelectorAll('gem')].forEach(() => {  });

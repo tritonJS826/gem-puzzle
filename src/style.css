@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 body {
   display: flex;
   flex-direction: column;
@@ -10,9 +11,7 @@ body {
 
 .playingField {
   display: flex;
-  /* width:90%; */
   flex-wrap: wrap;
-  /* max-width: 600px; */
   justify-content: center;
   align-items: center;
 
