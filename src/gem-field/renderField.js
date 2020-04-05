@@ -9,7 +9,7 @@ function renderField(field) {
     for (let j = 0; j < field.length; j += 1) {
       PLAYING_FIELD.innerHTML += `
       <div class="gem ${field[i][j] === 0 ? 'gem_empty' : ''}"
-      style="width:${WIDTH / field.length - 1}px; height:${WIDTH / field.length / 2}px"><span>${field[i][j]}</span><div>
+      style="width:${WIDTH / field.length - 1}px; height:${WIDTH / field.length / 2}px">${field[i][j]}</div>
       `;
     }
   }
