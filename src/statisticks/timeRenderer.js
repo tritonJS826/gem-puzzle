@@ -5,7 +5,7 @@ function timeRenderer(startDate) {
   const MIN = Math.floor(ALL_SECONDS / 60);
   const SEC = ALL_SECONDS - MIN * 60;
 
-  TIMERBLOCK.innerText = `${MIN} min :${SEC} sec`;
+  TIMERBLOCK.innerText = `Время: ${MIN}:${SEC}`;
 }
 
 

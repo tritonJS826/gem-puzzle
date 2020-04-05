@@ -1,7 +1,7 @@
 function renderMainBlocks() {
   document.body.innerHTML = `
     <div class="statistic" id="statistic">
-      <span id="moveCounter"></span>, <span id="time"></span>
+      <span id="moveCounter">Ходов: 0</span>, <span id="time"></span>
     </div>
     <div class="playingField" id="playingField"></div>
     <div class="setting" id="settings">

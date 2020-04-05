@@ -4,6 +4,7 @@ import getNewField from './gem-field/getNewField';
 import renderMainBlocks from './gem-field/renderMainBlocks';
 import renderField from './gem-field/renderField';
 import timeRenderer from './statisticks/timeRenderer';
+// import tryToShift from './gem-field/tryToShift';
 
 const gemPuzzle = {
   field: [],
@@ -28,8 +29,8 @@ const gemPuzzle = {
     timeRenderer(startDate);
   },
 
-  moveCounterRenderer() {
-
+  moveCounterRenderer(moveCounter = this.moveCounter) {
+    document.getElementById('moveCounter').innerText = `Ходов: ${moveCounter}`;
   },
 
   renderMainBlocks() {
@@ -40,6 +41,7 @@ const gemPuzzle = {
     renderField(field);
   },
 };
+// основной код
 
 gemPuzzle.saveStartDate(); // instead loadStartDate
 gemPuzzle.renderMainBlocks();
@@ -72,3 +74,54 @@ document.getElementById('buttons').addEventListener('click', ({ target: { id } }
   if (id === 'save') alert('save');
   if (id === 'results') alert('results');
 });
+
+function tryToShift(i, j) {
+  if (gemPuzzle.field[i + 1] && gemPuzzle.field[i + 1][j] === 0) {
+    gemPuzzle.field[i + 1][j] = gemPuzzle.field[i][j];
+    gemPuzzle.field[i][j] = 0;
+    gemPuzzle.renderField();
+    gemPuzzle.counterPlusOne();
+    gemPuzzle.moveCounterRenderer();
+    return;
+  }
+  if (gemPuzzle.field[i - 1] && gemPuzzle.field[i - 1][j] === 0) {
+    gemPuzzle.field[i - 1][j] = gemPuzzle.field[i][j];
+    gemPuzzle.field[i][j] = 0;
+    gemPuzzle.renderField();
+    gemPuzzle.counterPlusOne();
+    gemPuzzle.moveCounterRenderer();
+    return;
+  }
+  if (gemPuzzle.field[i][j - 1] === 0) {
+    gemPuzzle.field[i][j - 1] = gemPuzzle.field[i][j];
+    gemPuzzle.field[i][j] = 0;
+    gemPuzzle.renderField();
+    gemPuzzle.counterPlusOne();
+    gemPuzzle.moveCounterRenderer();
+    return;
+  }
+  if (gemPuzzle.field[i][j + 1] === 0) {
+    gemPuzzle.field[i][j + 1] = gemPuzzle.field[i][j];
+    gemPuzzle.field[i][j] = 0;
+    gemPuzzle.renderField();
+    gemPuzzle.counterPlusOne();
+    gemPuzzle.moveCounterRenderer();
+    return;
+  }
+  gemPuzzle.renderField();
+}
+
+function fieldListener() {
+  document.getElementById('playingField').addEventListener('click', ({ target: { innerText } }) => {
+    for (let i = 0; i < gemPuzzle.field.length; i += 1) {
+      for (let j = 0; j < gemPuzzle.field.length; j += 1) {
+        if (gemPuzzle.field[i][j] === Number(innerText)) {
+          tryToShift(i, j);
+          return;
+        }
+      }
+    }
+  });
+}
+
+fieldListener();
