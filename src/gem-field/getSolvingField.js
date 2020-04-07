@@ -1,15 +1,8 @@
-function getNewField(size) {
+function getSolvingField(size = 4) {
   let numbers = [].fill('');
   numbers[size ** 2 - 1] = '';
   numbers.fill('');
   numbers = numbers.map((el, ind) => ind);
-
-  function shuffle(array, repeat) {
-    for (let i = 0; i <= repeat; i += 1) {
-      array.sort(() => Math.random() - 0.5);
-    }
-  }
-  shuffle(numbers, size ** 2);
 
   const field = [];
   for (let i = 0; i < size; i += 1) {
@@ -21,4 +14,4 @@ function getNewField(size) {
   return field;
 }
 
-export default getNewField;
+export default getSolvingField;

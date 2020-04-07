@@ -35,8 +35,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       hash: true,
-      title: 'virtualKeyboard',
-      myPageHeader: 'virtualKeyboard',
+      title: 'gemPuzzle',
+      myPageHeader: 'gemPuzzle',
     }),
     new ExtractTextPlugin({
       filename: 'style.css',
