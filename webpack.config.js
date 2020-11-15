@@ -2,7 +2,6 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -11,25 +10,30 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
-    rules: [{
-      enforce: 'pre',
-      test: /\.js$/,
-      loader: 'eslint-loader',
-    },
-    {
-      test: /\.js$/,
-      exclude: /(node_modules)/,
-      use: {
-        loader: 'babel-loader',
+    rules: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'eslint-loader',
       },
-    },
-    {
-      test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-loader'],
-      }),
-    },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader'],
+        }),
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader',
+      },
     ],
   },
   plugins: [

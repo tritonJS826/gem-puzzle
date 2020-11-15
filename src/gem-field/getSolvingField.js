@@ -11,7 +11,11 @@ function getSolvingField(size = 4) {
       field[i][j] = numbers.pop();
     }
   }
-  return field;
+
+  for (let i = 0; i < size; i += 1) {
+    field[i].reverse();
+  }
+  return field.reverse();
 }
 
 export default getSolvingField;

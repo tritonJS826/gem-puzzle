@@ -17,7 +17,7 @@ function renderMainBlocks() {
     <div class="buttons" id="buttons">
       <div class="buttons--but" id="restart">Начать заново</div>
       <div class="buttons--but" id="save">Сохранить</div>
-      <div class="buttons--but" id="results">Результаты</div>
+      <div class="buttons--but" id="disableSound">Звук вкл/выкл</div>
     </div>
     </div>
   `;
