@@ -1,11 +1,15 @@
 import moveSound from '../assets/sounds/moving.mp3';
 import errorSound from '../assets/sounds/error.mp3';
 
-function tryToShift(i, j, gemPuzzle) {
+function tryToShift(i, j, gemNumber, gemPuzzle) {
   if (gemPuzzle.field[i + 1] && gemPuzzle.field[i + 1][j] === 0) {
     gemPuzzle.player(moveSound);
     gemPuzzle.swapWithZeroGem(i, j, i + 1, j);
     gemPuzzle.renderField();
+
+    const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
+    movingBlock.classList.add('anim');
+
     if (gemPuzzle.isWin()) {
       alert(`Вы выйграли! Ходов:${gemPuzzle.moveCounter}, Время:${gemPuzzle.timePassed}`);
       // congratulations
@@ -22,6 +26,10 @@ function tryToShift(i, j, gemPuzzle) {
     gemPuzzle.player(moveSound);
     gemPuzzle.swapWithZeroGem(i, j, i - 1, j);
     gemPuzzle.renderField();
+
+    const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
+    movingBlock.classList.add('anim');
+
     if (gemPuzzle.isWin()) {
       alert(`Вы выйграли! Ходов:${gemPuzzle.moveCounter}, Время:${gemPuzzle.timePassed}`);
       // congratulations
@@ -37,6 +45,10 @@ function tryToShift(i, j, gemPuzzle) {
     gemPuzzle.player(moveSound);
     gemPuzzle.swapWithZeroGem(i, j, i, j - 1);
     gemPuzzle.renderField();
+
+    const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
+    movingBlock.classList.add('anim');
+
     if (gemPuzzle.isWin()) {
       alert(`Вы выйграли! Ходов:${gemPuzzle.moveCounter}, Время:${gemPuzzle.timePassed}`);
       // congratulations
@@ -52,6 +64,10 @@ function tryToShift(i, j, gemPuzzle) {
     gemPuzzle.player(moveSound);
     gemPuzzle.swapWithZeroGem(i, j, i, j + 1);
     gemPuzzle.renderField();
+
+    const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
+    movingBlock.classList.add('anim');
+
     if (gemPuzzle.isWin()) {
       alert(`Вы выйграли! Ходов:${gemPuzzle.moveCounter}, Время:${gemPuzzle.timePassed}`);
       // congratulations

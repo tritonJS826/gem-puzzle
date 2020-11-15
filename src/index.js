@@ -60,8 +60,8 @@ const gemPuzzle = {
     this.field[iFirst][jFirst] = 0;
   },
 
-  tryToShift(i, j) {
-    tryToShift(i, j, this);
+  tryToShift(i, j, number) {
+    tryToShift(i, j, number, this);
   },
 
   counterPlusOne() {

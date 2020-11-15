@@ -58,3 +58,16 @@ body {
   padding: 1%;
   background: yellow;
 }
+
+.anim {
+  animation: scaling 1s ease;
+}
+
+@keyframes scaling{
+  from {
+    transform: scale(3);
+  }
+  to {
+    transform: scale(1);
+  }
+}
