@@ -1,14 +1,12 @@
-/*eslint-disable*/
-function timeRenderer(timePassed) {
-  // const startDate = new Date();
-  // const NOW = new Date();
-  const TIMERBLOCK = document.getElementById('time');
-  // const ALL_SECONDS = Math.round((NOW.getTime() - startDate.getTime()) / 1000);
-  const ALL_SECONDS = timePassed;
-  const MIN = Math.floor(ALL_SECONDS / 60);
-  const SEC = ALL_SECONDS - MIN * 60;
+const SECONDS_PER_MINUTE = 60;
 
-  TIMERBLOCK.innerText = `Время: ${MIN}:${SEC}`;
-}
+const timeRenderer = (passedSeconds) => {
+  const timerBlock = document.getElementById('time');
+
+  const minutes = Math.floor(passedSeconds / SECONDS_PER_MINUTE);
+  const seconds = passedSeconds - minutes * SECONDS_PER_MINUTE;
+
+  timerBlock.innerText = `Время: ${minutes}:${seconds}`;
+};
 
 export default timeRenderer;

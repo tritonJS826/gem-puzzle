@@ -1,20 +1,25 @@
-function renderField(field) {
-  const PLAYING_FIELD = document.getElementById('playingField');
-  PLAYING_FIELD.innerHTML = '';
-  const WIDTH = document.documentElement.clientWidth - 40;
-  const HEIGHT = document.documentElement.clientWidth - 100;
-  PLAYING_FIELD.style.width = `${WIDTH}px`;
-  PLAYING_FIELD.style.height = `${(HEIGHT) / 2}px`;
-  // [...document.querySelectorAll('gem')].forEach(() => {  });
+const renderField = (field) => {
+  const WIDTH_PADDING = 40;
+  const HEIGHT_PADDING = 100;
+
+  const playingField = document.getElementById('field');
+  const width = document.documentElement.clientWidth - WIDTH_PADDING;
+  const height = document.documentElement.clientWidth - HEIGHT_PADDING;
+
+  playingField.style.width = `${width}px`;
+  playingField.style.height = `${(height) / 2}px`;
+
+  playingField.innerHTML = '';
+
   for (let i = 0; i < field.length; i += 1) {
     for (let j = 0; j < field.length; j += 1) {
-      PLAYING_FIELD.innerHTML += `
-      <div class="gem ${field[i][j] === 0 ? 'gem_empty' : ''}"
-      style="width:${WIDTH / field.length - 1}px; height:${HEIGHT / field.length / 2}px"
+      playingField.innerHTML += `
+      <div class="gem ${field[i][j] === 0 ? 'gem--empty' : ''}"
+       style="width:${width / field.length - 1}px; height:${height / field.length / 2}px"
       data-num="${field[i][j]}">${field[i][j]}</div>
       `;
     }
   }
-}
+};
 
 export default renderField;

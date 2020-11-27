@@ -1,4 +1,4 @@
-function getSolvingField(size = 4) {
+const getSolvingField = (size = 4) => {
   let numbers = [].fill('');
   numbers[size ** 2 - 1] = '';
   numbers.fill('');
@@ -15,7 +15,8 @@ function getSolvingField(size = 4) {
   for (let i = 0; i < size; i += 1) {
     field[i].reverse();
   }
+
   return field.reverse();
-}
+};
 
 export default getSolvingField;

@@ -1,24 +1,17 @@
-function getNewField(size) {
-  let numbers = [].fill('');
-  numbers[size ** 2 - 1] = '';
-  numbers.fill('');
-  numbers = numbers.map((el, ind) => ind);
+import getSolvingField from './getSolvingField';
+import shuffleArr from '../helpers/shuffleArr';
 
-  function shuffle(array, repeat) {
-    for (let i = 0; i <= repeat; i += 1) {
-      array.sort(() => Math.random() - 0.5);
-    }
-  }
-  shuffle(numbers, size ** 2);
+const getNewField = (size) => {
+  const solvingField = getSolvingField(size);
 
-  const field = [];
-  for (let i = 0; i < size; i += 1) {
-    field[i] = [];
-    for (let j = 0; j < size; j += 1) {
-      field[i][j] = numbers.pop();
-    }
-  }
-  return field;
-}
+  shuffleArr(solvingField, size);
+
+  const newField = solvingField.map((line) => {
+    shuffleArr(line, size);
+    return line;
+  });
+
+  return newField;
+};
 
 export default getNewField;

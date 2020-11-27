@@ -1,18 +1,17 @@
-/*eslint-disable*/
 const moveAt = (pageX, pageY, target) => {
-  target.style.left = pageX - target.offsetWidth / 2 + 'px';
-  target.style.top = pageY - target.offsetHeight / 2 + 'px';
+  target.style.left = `${pageX - target.offsetWidth / 2}px`;
+  target.style.top = `${pageY - target.offsetHeight / 2}px`;
 };
 
 const onMouseMove = (event, target) => {
   moveAt(event.pageX, event.pageY, target);
 };
 
-const onGemClick = ({ target: { innerText } }, gemPuzzle) => {
-  for (let i = 0; i < gemPuzzle.field.length; i += 1) {
-    for (let j = 0; j < gemPuzzle.field.length; j += 1) {
-      if (gemPuzzle.field[i][j] === Number(innerText)) {
-        gemPuzzle.tryToShift(i, j, innerText);
+const onGemClick = ({ target: { innerText } }, field, tryToShift) => {
+  for (let i = 0; i < field.length; i += 1) {
+    for (let j = 0; j < field.length; j += 1) {
+      if (field[i][j] === Number(innerText)) {
+        tryToShift(i, j, innerText);
         return;
       }
     }
@@ -20,11 +19,10 @@ const onGemClick = ({ target: { innerText } }, gemPuzzle) => {
 };
 
 function fieldListener(gemPuzzle) {
-  const playingField = document.getElementById('playingField');
+  const playingField = document.getElementById('field');
 
-  // playingField.addEventListener('click', onGemClick);
-
-  playingField.addEventListener('mousedown', ({ target }) => {
+  playingField.addEventListener('mousedown', (event) => {
+    const { target } = event;
     const cloneTarget = target.cloneNode(true);
     cloneTarget.style.position = 'absolute';
     cloneTarget.style.zIndex = 1000;
@@ -37,8 +35,7 @@ function fieldListener(gemPuzzle) {
 
   document.addEventListener('mouseup', ({ target }) => {
     if (target.classList.contains('clone')) {
-      const number = target.innerText;
-      onGemClick({ target }, gemPuzzle);
+      onGemClick({ target }, gemPuzzle.field, gemPuzzle.tryToShift);
       target.remove();
       document.removeEventListener('mousemove', (e) => onMouseMove(e, target));
       target.onmouseup = null;

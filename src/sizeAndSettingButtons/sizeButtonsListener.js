@@ -1,10 +1,12 @@
 // при нажатии на кнопки размера под полем
 
 function sizeButtonsListener(gemPuzzle) {
-  document.getElementById('fieldSize').addEventListener('click', ({ target: { innerText } }) => {
-    gemPuzzle.setFieldSize(Number(innerText[0]));
-    gemPuzzle.setNewField(gemPuzzle.getNewField(Number(innerText[0])));
-    gemPuzzle.setSolvingField(gemPuzzle.getSolvingField(Number(innerText[0])));
+  document.getElementById('field--size').addEventListener('click', ({ target }) => {
+    const size = Number(target.getAttribute('data-size'));
+
+    gemPuzzle.setFieldSize(size);
+    gemPuzzle.setNewField(gemPuzzle.getNewField(size));
+    gemPuzzle.setSolvingField(gemPuzzle.getSolvingField(size));
     gemPuzzle.renderField();
     gemPuzzle.clearTimer();
     gemPuzzle.resetTimePassed();

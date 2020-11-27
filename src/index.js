@@ -5,22 +5,43 @@ import getSolvingField from './gem-field/getSolvingField';
 import renderMainBlocks from './gem-field/renderMainBlocks';
 import renderField from './gem-field/renderField';
 import timeRenderer from './statisticks/timeRenderer';
-import tryToShift from './gem-field/tryToShift';
+import errorSound from './assets/sounds/error.mp3';
 import fieldListener from './gem-field/fieldListener';
 import sizeButtonsListener from './sizeAndSettingButtons/settingsButtonsListener';
 import settingsButtonsListener from './sizeAndSettingButtons/sizeButtonsListener';
 import player from './helpers/player';
-import renderStatistics from './gem-field/renderStatistics';
+import moveSound from './assets/sounds/moving.mp3';
+import { setPopupMessage, enablePopupMessage, disablePopupMessage } from './sizeAndSettingButtons/popup';
+
+const storage = localStorage;
 
 const gemPuzzle = {
   field: [],
   solvingField: [],
-  isPlayerWork: true,
+  tisPlayerWork: true,
   fieldSize: 4,
   moveCounter: 0,
   timePassed: 0,
   timer: null,
   statistics: [],
+  popupMessage: 'половину игр закончить успешно нельзя, в таком случае не бойтесь просто начать новую',
+  isPopupMessageVisible: true,
+
+  setPopupMessage(message) {
+    this.popupMessage = message;
+    setPopupMessage();
+  },
+
+  enablePopupMessage(message = this.message) {
+    this.popupMessage = message;
+    this.isPopupMessageVisible = true;
+    enablePopupMessage(message);
+  },
+
+  disablePopupMessage() {
+    this.isPopupMessageVisible = false;
+    disablePopupMessage();
+  },
 
   tooglePlayerWork() {
     this.isPlayerWork = !this.isPlayerWork;
@@ -49,7 +70,7 @@ const gemPuzzle = {
   increaseTimePassed() {
     this.timePassed += 1;
     return this.timePassed;
-  }, // not working
+  },
 
   resetTimePassed() {
     this.TimePassed = 0;
@@ -60,8 +81,47 @@ const gemPuzzle = {
     this.field[iFirst][jFirst] = 0;
   },
 
-  tryToShift(i, j, number) {
-    tryToShift(i, j, number, this);
+  tryToShift(i, j, gemNumber) {
+    const isZeroTop = gemPuzzle.field[i + 1] && gemPuzzle.field[i + 1][j] === 0;
+    const isZeroRight = gemPuzzle.field[i - 1] && gemPuzzle.field[i - 1][j] === 0;
+    const isZeroLeft = gemPuzzle.field[i][j - 1] === 0;
+    const isZeroBottom = gemPuzzle.field[i][j + 1] === 0;
+
+    if (isZeroTop) {
+      gemPuzzle.swapWithZeroGem(i, j, i + 1, j);
+    }
+
+    if (isZeroRight) {
+      gemPuzzle.swapWithZeroGem(i, j, i - 1, j);
+    }
+    if (isZeroLeft) {
+      gemPuzzle.swapWithZeroGem(i, j, i, j - 1);
+    }
+    if (isZeroBottom) {
+      gemPuzzle.swapWithZeroGem(i, j, i, j + 1);
+    }
+
+    if (isZeroTop || isZeroLeft || isZeroRight || isZeroBottom) {
+      gemPuzzle.shift(gemNumber);
+      const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
+      movingBlock.classList.add('scalingAnimation');
+    } else {
+      gemPuzzle.player(errorSound);
+    }
+  },
+
+  shift(/* gemNumber */) {
+    this.player(moveSound);
+    this.renderField();
+
+    if (this.isWin()) {
+      this.enablePopupMessage(`Вы выиграли! Ходов:${this.moveCounter}, Время:${this.timePassed}`);
+
+      this.tryRecordStatistic();
+      this.saveStatistics();
+    }
+    this.counterPlusOne();
+    this.moveCounterRenderer();
   },
 
   counterPlusOne() {
@@ -91,16 +151,20 @@ const gemPuzzle = {
 
   startTimer() {
     if (this.timer) return;
-    this.timer = setInterval(this.timeRenderer.bind(this), 1000);
+    this.timer = setInterval(() => {
+      timeRenderer(this.timePassed);
+      this.timePassed += 1;
+    }, 1000);
   },
 
   clearTimer() {
     this.timePassed = 0;
-    // clearInterval(this.timer);
   },
 
   player(src) {
-    if (this.isPlayerWork)player(src);
+    if (this.isPlayerWork) {
+      player(src);
+    }
   },
 
   isWin() {
@@ -113,9 +177,15 @@ const gemPuzzle = {
   },
 
   tryRecordStatistic() {
-    console.log(this.statistics);
-    const { moveCounter, timePassed, statistics } = this;
-    statistics.push({ moveCounter, timePassed });
+    const {
+      moveCounter,
+      timePassed,
+      statistics,
+    } = this;
+    statistics.push({
+      moveCounter,
+      timePassed,
+    });
     statistics.sort((a, b) => {
       if (a.moveCounter > b.moveCounter) return 1;
       if (a.moveCounter < b.moveCounter) return -1;
@@ -125,11 +195,11 @@ const gemPuzzle = {
   },
 
   saveStatistics() {
-    localStorage.setItem('statistics', JSON.stringify(this.statistics));
+    storage.setItem('statistics', JSON.stringify(this.statistics));
   },
 
   saveGame() {
-    localStorage.setItem('game', JSON.stringify({
+    storage.setItem('game', JSON.stringify({
       field: this.field,
       solvingField: this.solvingField,
       fieldSize: this.fieldSize,
@@ -139,13 +209,14 @@ const gemPuzzle = {
   },
 
   loadStatistics() {
-    const statistics = JSON.parse(localStorage.getItem('statistics'));
-    if (!statistics) return;
-    this.statistics = statistics;
+    const statistics = JSON.parse(storage.getItem('statistics'));
+    if (statistics) {
+      this.statistics = statistics;
+    }
   },
 
   loadGame() {
-    const gameData = JSON.parse(localStorage.getItem('game'));
+    const gameData = JSON.parse(storage.getItem('game'));
     if (!gameData) return;
     this.field = gameData.field;
     this.solvingField = gameData.solvingField;
@@ -153,13 +224,8 @@ const gemPuzzle = {
     this.moveCounter = gameData.moveCounter;
     this.timePassed = gameData.timePassed;
   },
-
-  renderStatistics() {
-    renderStatistics(this.statistics);
-  },
 };
 
-alert('половину игр закончить успешно нельзя, в таком случае не бойтесь просто начать новую)');
 gemPuzzle.loadStatistics();
 gemPuzzle.loadGame();
 
@@ -171,7 +237,6 @@ gemPuzzle.setNewField(gemPuzzle.getNewField(4));
 gemPuzzle.setSolvingField(gemPuzzle.getSolvingField(4));
 
 gemPuzzle.renderField();
-gemPuzzle.renderStatistics();
 gemPuzzle.startTimer();
 
 
@@ -179,7 +244,6 @@ fieldListener(gemPuzzle);
 settingsButtonsListener(gemPuzzle);
 sizeButtonsListener(gemPuzzle);
 
-// its our adaptive
 window.addEventListener('resize', () => {
   gemPuzzle.renderField();
 });
