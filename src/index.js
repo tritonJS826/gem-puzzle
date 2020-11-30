@@ -1,5 +1,7 @@
+
 import 'normalize.css';
 import './style.css';
+import LOCAL_STORAGE_CONFIG from './constants/LOCAL_STORAGE_CONFIG';
 import getNewField from './gem-field/getNewField';
 import getSolvingField from './gem-field/getSolvingField';
 import renderMainBlocks from './gem-field/renderMainBlocks';
@@ -104,7 +106,7 @@ const gemPuzzle = {
     if (isZeroTop || isZeroLeft || isZeroRight || isZeroBottom) {
       gemPuzzle.shift(gemNumber);
       const movingBlock = document.querySelector(`[data-num="${gemNumber}"]`);
-      movingBlock.classList.add('scalingAnimation');
+      movingBlock.classList.add('scaling-animation');
     } else {
       gemPuzzle.player(errorSound);
     }
@@ -186,20 +188,16 @@ const gemPuzzle = {
       moveCounter,
       timePassed,
     });
-    statistics.sort((a, b) => {
-      if (a.moveCounter > b.moveCounter) return 1;
-      if (a.moveCounter < b.moveCounter) return -1;
-      return 0;
-    });
+    statistics.sort((a, b) => (a.moveCounter - b.moveCounter));
     if (statistics.length > 10) statistics.pop();
   },
 
   saveStatistics() {
-    storage.setItem('statistics', JSON.stringify(this.statistics));
+    storage.setItem(LOCAL_STORAGE_CONFIG.statistics, JSON.stringify(this.statistics));
   },
 
   saveGame() {
-    storage.setItem('game', JSON.stringify({
+    storage.setItem(LOCAL_STORAGE_CONFIG.game, JSON.stringify({
       field: this.field,
       solvingField: this.solvingField,
       fieldSize: this.fieldSize,
@@ -209,14 +207,14 @@ const gemPuzzle = {
   },
 
   loadStatistics() {
-    const statistics = JSON.parse(storage.getItem('statistics'));
+    const statistics = JSON.parse(storage.getItem(LOCAL_STORAGE_CONFIG.statistics));
     if (statistics) {
       this.statistics = statistics;
     }
   },
 
   loadGame() {
-    const gameData = JSON.parse(storage.getItem('game'));
+    const gameData = JSON.parse(storage.getItem(LOCAL_STORAGE_CONFIG.game));
     if (!gameData) return;
     this.field = gameData.field;
     this.solvingField = gameData.solvingField;

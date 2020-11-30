@@ -20,6 +20,8 @@
   "homepage": "https://github.com/tritonJS826/gem-puzzle",
   "dependencies": {
     "image-to-slices": "^0.1.3",
+    "img-load": "^2.0.0",
+    "img-split": "^0.1.0",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {

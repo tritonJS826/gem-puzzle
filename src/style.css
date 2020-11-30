@@ -32,7 +32,7 @@ body {
   background: rgb(148, 127, 114);
 }
 
-.field--size {
+.field-size {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -43,7 +43,7 @@ body {
   margin-left: auto;
 }
 
-.field--size__size {
+.field-size__size {
   border: 1px solid rgb(44, 29, 29);
   background: rgb(109, 196, 37);
 }
@@ -54,7 +54,7 @@ body {
   justify-content: center;
 }
 
-.buttons__but {
+.buttons__button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,7 +100,7 @@ body {
   display: none;
 }
 
-.scalingAnimation {
+.scaling-animation {
   animation: scaling 1s ease;
 }
 

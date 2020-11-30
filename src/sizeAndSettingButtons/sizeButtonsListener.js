@@ -1,7 +1,7 @@
 // при нажатии на кнопки размера под полем
 
 function sizeButtonsListener(gemPuzzle) {
-  document.getElementById('field--size').addEventListener('click', ({ target }) => {
+  document.getElementById('field-size').addEventListener('click', ({ target }) => {
     const size = Number(target.getAttribute('data-size'));
 
     gemPuzzle.setFieldSize(size);
